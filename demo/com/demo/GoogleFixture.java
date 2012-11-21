@@ -6,8 +6,11 @@ import com.tomkp.california.annotations.Fixture;
 import com.tomkp.california.annotations.Step;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+
+import static org.junit.Assert.assertEquals;
 
 
 @Fixture
@@ -47,21 +50,13 @@ public class GoogleFixture {
     }
 
 
-    @Step("I type '(.*)'")
-    public void type(String text) {
+    @Step("I search for '(.*)'")
+    public void searchFor(String text) throws Exception {
         System.out.println("type >>>>");
         if (LOG.isInfoEnabled()) LOG.info("text: '" + text + "'");
-        driver.findElement(By.id("gbqfq")).sendKeys(text);
+        driver.findElement(By.id("gbqfq")).sendKeys(text, Keys.RETURN);
+        Thread.sleep(1000);
         System.out.println("<<<< type");
-    }
-
-
-    @Step("I click '(.*)'")
-    public void click(String text) {
-        System.out.println("click >>>>");
-        if (LOG.isInfoEnabled()) LOG.info("text: '" + text + "'");
-        driver.findElement(By.id("gbqfba")).click();
-        System.out.println("<<<< click");
     }
 
 
@@ -69,6 +64,8 @@ public class GoogleFixture {
     public void shouldSeeResults(Integer numberOfResults) {
         System.out.println("shouldSeeResults >>>>");
         if (LOG.isInfoEnabled()) LOG.info("numberOfResults: '" + numberOfResults + "'");
+        Integer actual = driver.findElements(By.className("r")).size();
+        assertEquals(numberOfResults, actual);
         System.out.println("<<<< shouldSeeResults");
     }
 

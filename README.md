@@ -12,7 +12,7 @@ Feature: Google Tests
 
     Scenario: search google
         Given I am on 'http://www.google.com'
-        And I type 'cucumber'
+        And I search for 'cucumber'
         Then I should see 10 results
 
 ```
@@ -49,21 +49,17 @@ public class GoogleFixture {
     }
 
 
-    @Step("I type '(.*)'")
-    public void type(String text) {
-        driver.findElement(By.id("gbqfq")).sendKeys(text);
-    }
-
-
-    @Step("I click '(.*)'")
-    public void click(String text) {
-        driver.findElement(By.id("gbqfba")).click();
+    @Step("I search for '(.*)'")
+    public void searchFor(String text) throws Exception {
+        driver.findElement(By.id("gbqfq")).sendKeys(text, Keys.RETURN);
+        Thread.sleep(1000);
     }
 
 
     @Step("I should see (.*) results")
     public void shouldSeeResults(Integer numberOfResults) {
-        System.out.println("numberOfResults");
+        Integer actual = driver.findElements(By.className("r")).size();
+        assertEquals(numberOfResults, actual);
     }
 
 }
