@@ -7,7 +7,7 @@
 
 
 
-```
+```cucumber
 Feature: Google Tests
 
     Scenario: search google
@@ -20,14 +20,10 @@ Feature: Google Tests
 
 
 ```java
-
-
 @Fixture
 public class GoogleFixture {
 
-
     private WebDriver driver = null;
-
 
     @BeforeScenarios("open the browser")
     public void openBrowser() {
@@ -36,18 +32,15 @@ public class GoogleFixture {
         }
     }
 
-
     @AfterScenarios("quit the browser")
     public void closeBrowser() {
         driver.close();
     }
 
-
     @Step("I am on '(.*)'")
     public void onThePage(String page) {
         driver.get(page);
     }
-
 
     @Step("I search for '(.*)'")
     public void searchFor(String text) throws Exception {
@@ -55,14 +48,10 @@ public class GoogleFixture {
         Thread.sleep(1000);
     }
 
-
     @Step("I should see (.*) results")
     public void shouldSeeResults(Integer numberOfResults) {
         Integer actual = driver.findElements(By.className("r")).size();
         assertEquals(numberOfResults, actual);
     }
-
 }
-
-
 ```
