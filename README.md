@@ -11,7 +11,7 @@
 Feature: Google Tests
 
     Scenario: search google
-        Given I am on the 'google homepage'
+        Given I am on 'http://www.google.com'
         And I type 'cucumber'
         Then I should see 10 results
 
@@ -43,9 +43,9 @@ public class GoogleFixture {
     }
 
 
-    @Step("I am on the '(.*)'")
+    @Step("I am on '(.*)'")
     public void onThePage(String page) {
-        driver.get("http://www.google.com");
+        driver.get(page);
     }
 
 

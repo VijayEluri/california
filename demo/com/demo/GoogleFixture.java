@@ -38,11 +38,11 @@ public class GoogleFixture {
     }
 
 
-    @Step("I am on the '(.*)'")
+    @Step("I am on '(.*)'")
     public void onThePage(String page) {
         System.out.println("onThePage >>>>");
         if (LOG.isInfoEnabled()) LOG.info("page: '" + page + "'");
-        driver.get("http://www.google.com");
+        driver.get(page);
         System.out.println("<<<< onThePage");
     }
 
