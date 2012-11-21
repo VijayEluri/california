@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<project name="california" default="jar" basedir=".">
+
+
+    <path id="classpath.runtime" description="Set up classpath">
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+
+    <!--<target name="jar">
+        <compile/>
+        <jar basedir="classes"
+             destfile="${ant.project.name}.jar"
+                />
+    </target>-->
+
+    <target name="jar">
+        <compile/>
+        <jar jarfile="${ant.project.name}.jar" basedir="classes">
+            <manifest>
+                <attribute name="Class-Path" value="lib/*.jar"/>
+                <attribute name="Built-By" value="TKP"/>
+                <attribute name="Main-Class" value="com.tomkp.california.CaliforniaSuite"/>
+            </manifest>
+        </jar>
+    </target>
+
+
+
+
+    <target name="run" description="runs tests">
+        <compile/>
+        <junit-compile dir="example"/>
+        <junit-test dir="example" files="**/*Internal*.java"/>
+        <junit-report />
+    </target>
+
+
+    <macrodef name="compile">
+        <sequential>
+            <mkdir dir="classes"/>
+            <javac srcdir="src"
+                   destdir="classes"
+                   classpathref="classpath.runtime"
+                   fork="yes"
+                   debug="true"
+                   verbose="true"
+                    />
+        </sequential>
+    </macrodef>
+
+
+    <macrodef name="junit-compile">
+        <attribute name="dir"/>
+        <sequential>
+            <mkdir dir="tmp/cali/bin/junit"/>
+            <copy toDir="tmp/cali/bin/junit">
+                <fileset dir="@{dir}">
+                    <exclude name="**/*.java"/>
+                </fileset>
+            </copy>
+            <javac srcdir="@{dir}"
+                   destdir="tmp/cali/bin/junit"
+                   fork="yes"
+                   debug="true">
+                <classpath refid="classpath.runtime"/>
+                <classpath path="classes"/>
+            </javac>
+        </sequential>
+    </macrodef>
+
+
+    <macrodef name="junit-test">
+        <attribute name="dir"/>
+        <attribute name="files"/>
+        <sequential>
+            <mkdir dir="tmp/cali/unit"/>
+            <junit fork="yes" forkmode="once" dir="" printsummary="yes" showoutput="true"
+                   failureproperty="tests.failed">
+                <classpath>
+                    <pathelement location="tmp/cali/bin/junit"/>
+                    <path refid="classpath.runtime"/>
+                    <pathelement location="classes"/>
+                </classpath>
+                <formatter type="xml"/>
+                <batchtest todir="tmp/cali/unit">
+                    <fileset dir="@{dir}">
+                        <include name="@{files}"/>
+                    </fileset>
+                </batchtest>
+            </junit>
+        </sequential>
+    </macrodef>
+
+
+    <macrodef name="junit-report">
+        <sequential>
+            <mkdir dir="tmp/cali/reports"/>
+            <junitreport todir="tmp/cali/reports">
+                <fileset dir="tmp/cali/unit">
+                    <include name="TEST-*.xml"/>
+                </fileset>
+                <report format="frames" todir="tmp/cali/reports/html"/>
+            </junitreport>
+        </sequential>
+    </macrodef>
+
+</project>
