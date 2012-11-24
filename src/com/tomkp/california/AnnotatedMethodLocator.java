@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AnnotatedMethodLocatorX {
+public class AnnotatedMethodLocator {
 
-    private static final Logger LOG = Logger.getLogger(AnnotatedMethodLocatorX.class);
+    private static final Logger LOG = Logger.getLogger(AnnotatedMethodLocator.class);
 
     private AnnotatedMethodScanner scanner;
     private PackageExplorer packageExplorer;
@@ -21,9 +21,9 @@ public class AnnotatedMethodLocatorX {
 
     private Map<Class, Object> annotatedClassCache = new HashMap<Class, Object>();
 
-    public AnnotatedMethodLocatorX(AnnotatedMethodScanner scanner,
-                                   PackageExplorer packageExplorer,
-                                   String packageName) {
+    public AnnotatedMethodLocator(AnnotatedMethodScanner scanner,
+                                  PackageExplorer packageExplorer,
+                                  String packageName) {
         this.scanner = scanner;
         this.packageExplorer = packageExplorer;
         this.packageName = packageName;

@@ -5,10 +5,10 @@ import org.apache.log4j.Logger;
 
 import java.lang.reflect.Method;
 
-public class MethodInvokingXTest extends TestCase {
+public class MethodInvokingTest extends TestCase {
 
 
-    private static final Logger LOG = Logger.getLogger(MethodInvokingXTest.class);
+    private static final Logger LOG = Logger.getLogger(MethodInvokingTest.class);
 
 
     protected Object instance;
@@ -16,7 +16,7 @@ public class MethodInvokingXTest extends TestCase {
     private String name;
 
 
-    public MethodInvokingXTest(String name, Object instance, Method method) {
+    public MethodInvokingTest(String name, Object instance, Method method) {
         super("test");
         this.name = name;
         this.instance = instance;

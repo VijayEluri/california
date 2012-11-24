@@ -18,10 +18,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 
-public abstract class CaliforniaSuiteX extends TestSuite {
+public abstract class CaliforniaSuite extends TestSuite {
 
 
-    private static final Logger LOG = Logger.getLogger(CaliforniaSuiteX.class);
+    private static final Logger LOG = Logger.getLogger(CaliforniaSuite.class);
 
 
     protected static TestSuite generateSuite(String suiteName, String basePackage, String suffix, final String specsPath) {
