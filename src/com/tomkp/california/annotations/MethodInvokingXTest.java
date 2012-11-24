@@ -1,10 +1,8 @@
 package com.tomkp.california.annotations;
 
-import com.tomkp.california.processing.AnnotatedMethodProcessor;
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 public class MethodInvokingXTest extends TestCase {
@@ -26,9 +24,8 @@ public class MethodInvokingXTest extends TestCase {
     }
 
 
-
     public void test() {
-        LOG.info("test - instance: '" +  instance + "', method: '" + method + "'");
+        LOG.info("test - instance: '" + instance + "', method: '" + method + "'");
         try {
             if (method != null) {
                 LOG.debug("invoke '" + method.getName() + "' on '" + instance + "'");

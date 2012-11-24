@@ -3,7 +3,7 @@ package com.tomkp.california;
 import junit.framework.TestSuite;
 
 
-public class InternalSuite extends CaliforniaSuite {
+public class InternalSuite extends CaliforniaSuiteX {
 
     public static TestSuite suite() {
 

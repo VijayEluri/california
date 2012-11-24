@@ -22,7 +22,7 @@
             <manifest>
                 <attribute name="Class-Path" value="lib/*.jar"/>
                 <attribute name="Built-By" value="TKP"/>
-                <attribute name="Main-Class" value="com.tomkp.california.CaliforniaSuite"/>
+                <attribute name="Main-Class" value="com.tomkp.california.CaliforniaSuiteX"/>
             </manifest>
         </jar>
     </target>
