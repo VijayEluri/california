@@ -1,15 +1,13 @@
 package com.demo;
 
-import com.tomkp.california.annotations.AfterScenarios;
-import com.tomkp.california.annotations.BeforeScenarios;
-import com.tomkp.california.annotations.Fixture;
-import com.tomkp.california.annotations.Step;
+import com.tomkp.california.annotations.*;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import static com.tomkp.california.annotations.When.BEFORE_SCENARIOS;
 import static org.junit.Assert.assertEquals;
 
 
@@ -19,6 +17,7 @@ public class GoogleFixture {
     private static final Logger LOG = Logger.getLogger(GoogleFixture.class);
 
     private WebDriver driver = null;
+
 
 
     @BeforeScenarios("open the browser")
@@ -36,7 +35,7 @@ public class GoogleFixture {
     public void closeBrowser() {
         System.out.println("closeBrowser >>>>");
         if (LOG.isInfoEnabled()) LOG.info("close browser");
-        driver.close();
+        driver.quit();
         System.out.println("<<<< closeBrowser");
     }
 

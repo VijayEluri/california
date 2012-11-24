@@ -1,4 +1,6 @@
 
 Scenario: finds matching files
 
-    directory 'testdata' contains 3 files with suffix 'txt'
+    Given a directory 'testdata'
+    Then it should contain 3 files with suffix 'txt'
+    Then it should contain 1 file with suffix 'properties'

@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface Step {
 
-    String value();
+    String[] value();
 
     String[] formats() default {}; //{"dd/MM/yyyy"};
 

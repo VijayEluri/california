@@ -11,12 +11,22 @@ import java.io.FilenameFilter;
 @Fixture
 public class SpecFinderFixture {
 
+    private String directoryName;
 
-    @Step("directory '(.*)' contains (.*) files with suffix '(.*)'")
-    public void scansForFiles(String dir, Integer count, String suffix) throws Exception {
-        assertThat(countFiles(dir, suffix), equalTo(count));
+
+    @Step("a directory '(.*)'")
+    public void scansForFiles(String directoryName) throws Exception {
+        this.directoryName = directoryName;
     }
 
+
+    @Step({
+            "it should contain (.*) files with suffix '(.*)'",
+            "it should contain (.*) file with suffix '(.*)'"
+    })
+    public void scansForFiles(Integer count, String suffix) throws Exception {
+        assertThat(countFiles(directoryName, suffix), equalTo(count));
+    }
 
 
     private int countFiles(String dir, final String suffix) {

@@ -1,9 +1,10 @@
 package com.demo;
 
 import com.tomkp.california.CaliforniaSuite;
+import com.tomkp.california.CaliforniaSuiteX;
 import junit.framework.TestSuite;
 
-public class DemoSuite extends CaliforniaSuite  {
+public class SearchGoogleSuiteX extends CaliforniaSuiteX {
 
 
 

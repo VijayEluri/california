@@ -25,7 +25,8 @@ public abstract class CaliforniaSuite extends TestSuite {
 
     protected static TestSuite generateSuite(String suiteName, String basePackage, String suffix, final String specsPath) {
 
-        if (LOG.isInfoEnabled()) LOG.info("generate test master suite '" + suiteName + "', base package '" + basePackage + "', specifications with suffix '" + suffix + "'");
+        if (LOG.isInfoEnabled())
+            LOG.info("generate test master suite '" + suiteName + "', base package '" + basePackage + "', specifications with suffix '" + suffix + "'");
 
         TestSuite testSuite = new TestSuite();
 
@@ -43,15 +44,10 @@ public abstract class CaliforniaSuite extends TestSuite {
                 testSuite.addTest(beforeSuite);
             }
 
-            StepProcessor stepProcessor = new StepProcessor();
-
-            annotatedMethodLocator.locate(Fixture.class, Step.class, stepProcessor);
-
-            Map<Pattern,InvokableStep> stepMethodMap = stepProcessor.getStepMethods();
-
-            StepInvoker stepInvoker = new StepInvoker(stepMethodMap);
+            StepInvoker stepInvoker = createStepInvoker(annotatedMethodLocator);
 
             List<File> specs = specificationFinder.findSpecs(new File(specsPath));
+
             if (specs.isEmpty()) {
                 Assert.fail("no tests found");
             }
@@ -131,6 +127,16 @@ public abstract class CaliforniaSuite extends TestSuite {
     }
 
 
+    private static StepInvoker createStepInvoker(AnnotatedMethodLocator annotatedMethodLocator) throws Exception {
+        StepProcessor stepProcessor = new StepProcessor();
+
+        annotatedMethodLocator.locate(Fixture.class, Step.class, stepProcessor);
+
+        Map<Pattern, InvokableStep> stepMethodMap = stepProcessor.getStepMethods();
+
+        return new StepInvoker(stepMethodMap);
+    }
+
 
     private static void recurse(TestSuite suite) {
         LOG.info("suite: '" + suite + "'");
@@ -140,7 +146,7 @@ public abstract class CaliforniaSuite extends TestSuite {
             Test test = tests.nextElement();
 
             if (test instanceof TestSuite) {
-                recurse((TestSuite)test);
+                recurse((TestSuite) test);
             } else {
                 LOG.info("test:  '" + test + "'");
             }
@@ -164,7 +170,6 @@ public abstract class CaliforniaSuite extends TestSuite {
     }
 
 
-
     private static MethodInvokingTest beforeScenario(AnnotatedMethodLocator annotatedMethodLocator) throws Exception {
         MethodInvokingTest<BeforeScenario> beforeTest = new MethodInvokingTest<BeforeScenario>() {
             @Override
@@ -180,7 +185,6 @@ public abstract class CaliforniaSuite extends TestSuite {
     }
 
 
-
     private static MethodInvokingTest afterScenarios(AnnotatedMethodLocator annotatedMethodLocator) throws Exception {
         MethodInvokingTest<AfterScenarios> afterTest = new MethodInvokingTest<AfterScenarios>() {
             @Override
@@ -188,7 +192,8 @@ public abstract class CaliforniaSuite extends TestSuite {
                 if (annotation == null) {
                     return "after scenarios";
                 }
-                return annotation.value();            }
+                return annotation.value();
+            }
         };
         annotatedMethodLocator.locate(Fixture.class, AfterScenarios.class, afterTest);
         return afterTest;
@@ -208,7 +213,6 @@ public abstract class CaliforniaSuite extends TestSuite {
         annotatedMethodLocator.locate(Fixture.class, BeforeScenarios.class, beforeTest);
         return beforeTest;
     }
-
 
 
     private static MethodInvokingTest afterSuite(AnnotatedMethodLocator annotatedMethodLocator) throws Exception {
@@ -239,5 +243,6 @@ public abstract class CaliforniaSuite extends TestSuite {
         annotatedMethodLocator.locate(Fixture.class, BeforeSuite.class, beforeTest);
         return beforeTest;
     }
+
 
 }

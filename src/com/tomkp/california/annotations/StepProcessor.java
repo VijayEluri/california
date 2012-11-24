@@ -19,12 +19,14 @@ public class StepProcessor implements AnnotatedMethodProcessor<Step> {
 
     @Override
     public void process(Object instance, Method method, Step step) {
-        final String value = step.value();
+        final String[] values = step.value();
         final String[] formats = step.formats();
-        Pattern pattern = Pattern.compile(value);
-        InvokableStep invokableStep = new InvokableStep(method, instance, formats);
-        if (LOG.isInfoEnabled()) LOG.info("store '" + pattern + "': '" + invokableStep + "'");
-        steps.put(pattern, invokableStep);
+        for (String value : values) {
+            Pattern pattern = Pattern.compile(value);
+            InvokableStep invokableStep = new InvokableStep(method, instance, formats);
+            if (LOG.isInfoEnabled()) LOG.info("store '" + pattern + "': '" + invokableStep + "'");
+            steps.put(pattern, invokableStep);
+        }
     }
 
     public Map<Pattern, InvokableStep> getStepMethods() {
