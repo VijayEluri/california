@@ -31,7 +31,7 @@ public abstract class CaliforniaSuite extends TestSuite {
 
         TestSuite testSuite = new TestSuite();
 
-        AnnotatedMethodLocatorX annotatedMethodLocator = new AnnotatedMethodLocatorX(
+        AnnotatedMethodLocator annotatedMethodLocator = new AnnotatedMethodLocator(
                 new AnnotatedMethodScanner(),
                 new PackageExplorer(),
                 basePackage);
@@ -103,7 +103,7 @@ public abstract class CaliforniaSuite extends TestSuite {
     }
 
 
-    private static StepInvoker createStepInvoker(AnnotatedMethodLocatorX annotatedMethodLocator) throws Exception {
+    private static StepInvoker createStepInvoker(AnnotatedMethodLocator annotatedMethodLocator) throws Exception {
 
         List<InstanceMethods> instanceMethodsList = annotatedMethodLocator.locate(Fixture.class, Step.class);
 
@@ -133,7 +133,7 @@ public abstract class CaliforniaSuite extends TestSuite {
 
 
 
-    private static <A extends Annotation> void addTests(TestSuite suite, AnnotatedMethodLocatorX annotatedMethodLocator, Class<A> a) throws Exception {
+    private static <A extends Annotation> void addTests(TestSuite suite, AnnotatedMethodLocator annotatedMethodLocator, Class<A> a) throws Exception {
 
         List<InstanceMethods> methodsList = annotatedMethodLocator.locate(Fixture.class, a);
 
@@ -145,7 +145,7 @@ public abstract class CaliforniaSuite extends TestSuite {
                 Method value = annotation.getClass().getMethod("value");
                 Object invoke = value.invoke(annotation);
                 String name = invoke.toString();
-                MethodInvokingXTest methodInvokingTest = new MethodInvokingXTest(name, instanceMethods.getInstance(), method);
+                MethodInvokingTest methodInvokingTest = new MethodInvokingTest(name, instanceMethods.getInstance(), method);
                 suite.addTest(methodInvokingTest);
             }
         }
