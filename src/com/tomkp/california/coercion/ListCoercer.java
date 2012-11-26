@@ -16,7 +16,7 @@ public class ListCoercer implements Coercer<List> {
         if (LOG.isDebugEnabled()) LOG.debug("value: '" + value + "', format: '" + format + "'");
 
         if (format == null) {
-            format = ","; // TODO or maybe " "? choose a sensible default
+            format = ", ";
         }
         String[] split = value.split(format);
         if (LOG.isDebugEnabled()) LOG.debug("split into: '" + split.length + "' items");

@@ -1,7 +1,9 @@
 package com.tomkp.california;
 
+import com.tomkp.california.features.Syntax;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,58 +12,48 @@ import java.util.List;
 
 public class FeatureCreator {
 
-    private static final Logger LOG = Logger.getLogger(FeatureCreator.class);
 
-    private File file;
-
-
-    public FeatureCreator(File file) {
-        this.file = file;
-    }
+    private static final Logger LOG = LoggerFactory.getLogger(FeatureCreator.class);
 
 
-
-    public Feature createFeature() {
+    public Feature parse(File file) {
         Feature feature = new Feature(file);
+        LOG.info("create feature from file '{}'", file.getName());
+        try {
 
-        if (LOG.isInfoEnabled()) LOG.info("create feature from file: '" + file.getName() + "'");
-        if (file != null) {
-            try {
-                if (LOG.isDebugEnabled()) LOG.debug("process file: '" + file + "'");
+            String contents = FileUtils.readFileToString(file);
+            List<String> lines = Arrays.asList(contents.split("\n"));
 
-                String contents = FileUtils.readFileToString(file);
-                List<String> lines = Arrays.asList(contents.split("\n"));
+            int lineNumber = 0;
 
-                int lineNumber = 0;
-                
-                
-                Scenario scenario = null;
-                for (String line : lines) {
+            Scenario scenario = null;
+            for (String line : lines) {
 
-                    lineNumber++;
-                    line = line.trim();
-                    if (line.contains("Feature:")) {
-                        feature.setName(line);
-                    }
-
-                    if (line.contains("Scenario:")) {
-                        scenario = new Scenario(file, line);
-                        feature.addScenario(scenario);
-                    }
-                    else if (scenario != null) {
-                        scenario.addLine(new Line(file, lineNumber, line));
-                    }
+                lineNumber++;
+                line = line.trim();
+                if (line.contains(Syntax.FEATURE.getValue())) {
+                    feature.setName(line);
                 }
 
-            } catch (IOException e) {
-                throw new RuntimeException("error reading file '" + file + "'");
+                if (line.contains(Syntax.SCENARIO.getValue())) {
+                    scenario = new Scenario(feature, line);
+                    feature.addScenario(scenario);
+                } else if (scenario != null) {
+
+                    if (line.matches(Syntax.CUCUMBER_SYNTAX.getValue())) {
+
+                        LOG.info("line: '{}'", line);
+
+                        scenario.addLine(new Line(scenario, lineNumber, line));
+                    }
+                }
             }
+
+        } catch (IOException e) {
+            throw new RuntimeException("error reading file '" + file + "'");
         }
-        //return runners;
         return feature;
     }
-    
-    
 
 
 }

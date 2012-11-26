@@ -1,4 +1,4 @@
-package com.tomkp.california.annotations;
+package com.tomkp.california.tests;
 
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;

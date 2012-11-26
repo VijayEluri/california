@@ -1,5 +1,6 @@
-package com.tomkp.california;
+package com.tomkp.california.tests;
 
+import com.tomkp.california.Line;
 import com.tomkp.california.invocation.InvocationResult;
 import com.tomkp.california.invocation.StepInvoker;
 import junit.framework.TestCase;
@@ -44,7 +45,7 @@ public class LineTest extends TestCase {
 
     @Override
     public String getName() {
-        return "" + line.getContents() + "  (" + line.getFile() + ":" + line.getNumber() + ")";
+        return "" + line.getContents() + "  (" + line.getScenario().getFilePath() + ":" + line.getNumber() + ")";
     }
 
 }

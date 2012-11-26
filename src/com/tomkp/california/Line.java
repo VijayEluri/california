@@ -6,16 +6,16 @@ public class Line {
 
     private int number;
     private String contents;
-    private File file;
+    private Scenario scenario;
 
-    public Line(File file, int number, String contents) {
-        this.file = file;
+    public Line(Scenario scenario, int number, String contents) {
+        this.scenario = scenario;
         this.number = number;
         this.contents = contents;
     }
 
-    public File getFile() {
-        return file;
+    public Scenario getScenario() {
+        return scenario;
     }
 
     public int getNumber() {
@@ -32,11 +32,8 @@ public class Line {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer();
-        //at com.tomkp.california.invocation.StepInvoker.invoke(StepInvoker.java:84)
-        //sb.append("file:///").append(file.getAbsoluteFile()).append("#").append(number).append("\n");
-        sb.append("").append(file.getAbsoluteFile()).append(":").append(number).append("): ");
-        //sb.append("line #").append(number).append(" ");
+        final StringBuilder sb = new StringBuilder();
+        sb.append("").append(scenario.getFilePath()).append(":").append(number).append(": ");
         sb.append("\"").append(contents).append("\"");
         return sb.toString();
     }

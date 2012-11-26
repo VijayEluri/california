@@ -7,7 +7,7 @@ public class InternalSuite extends CaliforniaSuite {
 
     public static TestSuite suite() {
 
-        return generateSuite("Internal Tests", "com.tomkp", ".spec", "specs");
+        return generateSuite("Internal Tests", "com.tomkp", ".spec", "integration/specs");
 
     }
 

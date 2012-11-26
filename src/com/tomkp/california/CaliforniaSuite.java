@@ -5,12 +5,13 @@ import com.tomkp.california.invocation.StepInvoker;
 import com.tomkp.california.methods.InvokableStep;
 import com.tomkp.california.processing.AnnotatedMethodScanner;
 import com.tomkp.california.processing.PackageExplorer;
+import com.tomkp.california.tests.LineTest;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -38,9 +39,18 @@ public abstract class CaliforniaSuite extends TestSuite {
 
         SpecificationFinder specificationFinder = new SpecificationFinder(suffix);
 
+        FeatureCreator featureCreator = new FeatureCreator();
+
+        Hooks hooks = new Hooks(annotatedMethodLocator);
+
         try {
 
-            addTests(testSuite, annotatedMethodLocator, BeforeSuite.class);
+            List<TestCase> tests;
+
+            tests = hooks.generateTests(BeforeSuite.class);
+            for (TestCase test : tests) {
+                testSuite.addTest(test);
+            }
 
 
             StepInvoker stepInvoker = createStepInvoker(annotatedMethodLocator);
@@ -53,14 +63,18 @@ public abstract class CaliforniaSuite extends TestSuite {
             for (File specFile : specs) {
                 if (LOG.isDebugEnabled()) LOG.debug("create test for spec: '" + specFile + "'");
 
-                FeatureCreator featureCreator = new FeatureCreator(specFile);
-                Feature feature = featureCreator.createFeature();
+
+                Feature feature = featureCreator.parse(specFile);
 
 
                 TestSuite featureSuite = new TestSuite();
                 featureSuite.setName(feature.getName());
 
-                addTests(featureSuite, annotatedMethodLocator, BeforeScenarios.class);
+                tests = hooks.generateTests(BeforeScenarios.class);
+
+                for (TestCase test : tests) {
+                    featureSuite.addTest(test);
+                }
 
                 for (Scenario scenario : feature.getScenarios()) {
 
@@ -81,19 +95,29 @@ public abstract class CaliforniaSuite extends TestSuite {
                         }
                     }
 
-                    addTests(featureSuite, annotatedMethodLocator, BeforeScenario.class);
+                    tests = hooks.generateTests(BeforeScenario.class);
+                    for (TestCase test : tests) {
+                        featureSuite.addTest(test);
+                    }
 
                     featureSuite.addTest(scenarioSuite);
 
-                    addTests(featureSuite, annotatedMethodLocator, AfterScenario.class);
+                    tests = hooks.generateTests(AfterScenario.class);
+                    for (TestCase test : tests) {
+                        featureSuite.addTest(test);
+                    }
                 }
 
-                addTests(featureSuite, annotatedMethodLocator, AfterScenarios.class);
-
+                tests = hooks.generateTests(AfterScenarios.class);
+                for (TestCase test : tests) {
+                    featureSuite.addTest(test);
+                }
                 testSuite.addTest(featureSuite);
             }
-            addTests(testSuite, annotatedMethodLocator, AfterSuite.class);
-
+            tests = hooks.generateTests(AfterSuite.class);
+            for (TestCase test : tests) {
+                testSuite.addTest(test);
+            }
         } catch (Exception e) {
             LOG.warn("error running tests", e);
         }
@@ -129,27 +153,6 @@ public abstract class CaliforniaSuite extends TestSuite {
 
 
         return new StepInvoker(steps);
-    }
-
-
-
-    private static <A extends Annotation> void addTests(TestSuite suite, AnnotatedMethodLocator annotatedMethodLocator, Class<A> a) throws Exception {
-
-        List<InstanceMethods> methodsList = annotatedMethodLocator.locate(Fixture.class, a);
-
-        for (InstanceMethods instanceMethods : methodsList) {
-            LOG.info("instance methods: '" + instanceMethods + "'");
-            for (Method method : instanceMethods.getMethods()) {
-                LOG.info("method: '" + method + "'");
-                final A annotation = method.getAnnotation(a);
-                Method value = annotation.getClass().getMethod("value");
-                Object invoke = value.invoke(annotation);
-                String name = invoke.toString();
-                MethodInvokingTest methodInvokingTest = new MethodInvokingTest(name, instanceMethods.getInstance(), method);
-                suite.addTest(methodInvokingTest);
-            }
-        }
-
     }
 
 
