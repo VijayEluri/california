@@ -42,8 +42,6 @@ public class AnnotatedMethodScannerTest {
     public void scanForTwoAnnotatedMethods() {
         List<Method> methods = annotatedMethodScanner.scanMethods(new TwoAnnotatedMethods(), MethodAnnotation.class);
         assertEquals(2, methods.size());
-        assertEquals("x", methods.get(0).getName());
-        assertEquals("y", methods.get(1).getName());
     }
 
 

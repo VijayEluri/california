@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class FeatureCreator {
+public class FeatureParser {
 
 
-    private static final Logger LOG = LoggerFactory.getLogger(FeatureCreator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FeatureParser.class);
 
 
     public Feature parse(File file) {

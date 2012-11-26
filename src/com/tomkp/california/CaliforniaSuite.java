@@ -39,7 +39,7 @@ public abstract class CaliforniaSuite extends TestSuite {
 
         SpecificationFinder specificationFinder = new SpecificationFinder(suffix);
 
-        FeatureCreator featureCreator = new FeatureCreator();
+        FeatureParser featureParser = new FeatureParser();
 
         Hooks hooks = new Hooks(annotatedMethodLocator);
 
@@ -64,7 +64,7 @@ public abstract class CaliforniaSuite extends TestSuite {
                 if (LOG.isDebugEnabled()) LOG.debug("create test for spec: '" + specFile + "'");
 
 
-                Feature feature = featureCreator.parse(specFile);
+                Feature feature = featureParser.parse(specFile);
 
 
                 TestSuite featureSuite = new TestSuite();
