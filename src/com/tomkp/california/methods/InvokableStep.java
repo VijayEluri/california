@@ -44,7 +44,7 @@ public class InvokableStep {
             }
             try {
                 Object coerced = TypeCoercion.coerce(aClass, param, format);
-                //LOG.info("coerced: '" + coerced + "' to a  '" + coerced.getClass().getSimpleName() + "'");
+                LOG.info("coerced: '" + coerced + "' to a  '" + coerced.getClass().getSimpleName() + "'");
                 paramList.add(coerced);
             } catch (Exception e) {
                 LOG.warn("error coercing parameter '" + param + "'", e);
@@ -54,7 +54,7 @@ public class InvokableStep {
 
         boolean result = false;
         try {
-            LOG.debug("invoke '" + method.getDeclaringClass().getSimpleName() + "."  + method.getName() + "' with parameters: '" + paramList + "'");
+            LOG.debug("invoke '" + method.getDeclaringClass().getSimpleName() + "." + method.getName() + "' with parameters: '" + paramList + "'");
             if (LOG.isDebugEnabled()) LOG.debug("instance: '" + instance + "'");
             if (classes.length == 0) {
                 method.invoke(instance);

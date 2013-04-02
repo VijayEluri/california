@@ -1,5 +1,7 @@
 package com.tomkp.california.annotations;
 
+import com.tomkp.california.Lifespan;
+
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Retention;
 import java.lang.annotation.ElementType;
@@ -10,5 +12,8 @@ import java.lang.annotation.Target;
 public @interface Fixture {
 
     String value() default "";
+
+    Lifespan lifespan() default Lifespan.FULL_SUITE;
+
 
 }
